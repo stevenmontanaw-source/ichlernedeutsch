@@ -238,6 +238,41 @@ a.btn{text-decoration:none;display:inline-flex;align-items:center}
 .acts.near{margin-top:0;min-height:0}
 .acts.near:empty{display:none}
 .acts.near .btn{flex:1 1 100%;padding:16px;font-size:1.1rem}
+.row.tap{cursor:pointer}
+.row.tap:hover{background:color-mix(in srgb,var(--accent) 6%,var(--surface))}
+.row.tap:focus-visible{outline:3px solid var(--accent);outline-offset:-3px}
+body.noscroll{overflow:hidden}
+.sheet{position:fixed;inset:0;z-index:40;display:flex;align-items:flex-end;justify-content:center}
+.shback{position:absolute;inset:0;background:rgba(10,12,16,.5)}
+.shpanel{position:relative;width:100%;max-width:640px;max-height:88vh;background:var(--surface);border-radius:20px 20px 0 0;display:flex;flex-direction:column;box-shadow:0 -10px 30px rgba(0,0,0,.25);
+  padding-bottom:env(safe-area-inset-bottom,0px);animation:up .22s ease}
+@keyframes up{from{transform:translateY(40px);opacity:.4}}
+.shbar{display:flex;gap:6px;align-items:center;padding:10px 14px;border-bottom:1px solid var(--line)}
+.shbar .kbd{min-width:4.5em}
+.shbody{overflow:auto;padding:14px max(16px,env(safe-area-inset-right,0px)) 20px max(16px,env(safe-area-inset-left,0px));display:flex;flex-direction:column;gap:14px}
+.shhead{display:flex;gap:12px;align-items:flex-start}
+.shword{min-width:0}
+.shword .big{font:800 1.7rem/1.15 var(--display);display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+.shword .big .sep{color:var(--accent)}
+.shword .en{font-size:1.05rem;font-weight:700}
+.shword .meta{font-size:.82rem;color:var(--muted)}
+.shmem{display:flex;gap:12px;align-items:center;background:var(--bg);border-radius:12px;padding:10px 12px;font-size:.84rem}
+.shmem .mem{min-width:64px}
+.shstat{color:var(--muted)}.shstat b{color:var(--ink)}
+.hist{display:flex;gap:3px;margin-top:5px}.hist i{width:9px;height:9px;border-radius:50%}.hist i.y{background:var(--ok)}.hist i.n{background:var(--bad)}
+.shsec{display:flex;flex-direction:column;gap:6px}
+.shsec h3{font:800 1rem var(--display);margin:0}.shsec h3 small{font:400 .78rem var(--body);color:var(--muted);margin-left:6px}
+.ctab{width:100%;border-collapse:collapse;font-size:.95rem}
+.ctab th,.ctab td{padding:7px 8px;border-top:1px solid var(--line);text-align:left;vertical-align:top}
+.ctab tr:first-child th,.ctab tr:first-child td{border-top:0}
+.ctab thead th{font-size:.72rem;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);border-top:0}
+.ctab tbody th{color:var(--muted);font-weight:700;width:34%;font-size:.86rem}
+.ctab tr[data-say],.ctab td[data-say]{cursor:pointer}
+.ctab tr[data-say]:hover,.ctab td[data-say]:hover{background:var(--bg)}
+.ctab td.irr,.irrkey{color:var(--ink);background:color-mix(in srgb,var(--accent) 28%,transparent);border-radius:4px;font-weight:700}
+.irrkey{padding:0 4px}
+.ctab.cases td{width:33%}.ctab td.na{color:var(--muted)}
+.ca{font-weight:700;color:var(--muted)}
 #confetti{position:fixed;inset:0;pointer-events:none;z-index:50;width:100%;height:100%}
 .backup{display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between;background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:12px 14px;font-size:.88rem}
 .backup span{color:var(--muted)}
@@ -246,6 +281,14 @@ a.btn{text-decoration:none;display:inline-flex;align-items:center}
 
 <script src="qrcode.js"></script>
 <canvas id="confetti" hidden></canvas>
+<div class="sheet" id="sheet" hidden>
+  <div class="shback" id="shBack"></div>
+  <div class="shpanel" role="dialog" aria-modal="true" aria-label="Word details">
+    <div class="shbar"><button class="btn sm" id="shPrev" aria-label="Previous word">‹</button><span class="kbd" id="shPos"></span><button class="btn sm" id="shNext" aria-label="Next word">›</button>
+      <span style="flex:1"></span><button class="btn sm primary" id="shPractise">▶ Practise</button><button class="btn sm" id="shClose" aria-label="Close">✕</button></div>
+    <div class="shbody" id="sheetBody"></div>
+  </div>
+</div>
 <div class="scanov" id="scanov" hidden role="dialog" aria-label="Scan a QR code">
   <div class="scanbox"><video id="scanvid" playsinline muted></video><div class="scanframe"></div></div>
   <p id="scanmsg">Point the camera at your partner's QR code.</p>
@@ -696,7 +739,7 @@ v|B1|sich erholen|hat sich erholt|to recover, to rest|-|Im Urlaub habe ich mich 
 v|B1|behandeln|hat behandelt|to treat|-|Welcher Arzt hat Sie behandelt?|Which doctor treated you?
 v|B1|operieren|hat operiert|to operate|-|Er wird morgen am Knie operiert.|He's having knee surgery tomorrow.
 v|B1|verschreiben|hat verschrieben|to prescribe|i|Der Arzt hat mir Tabletten verschrieben.|The doctor prescribed me tablets.
-v|B1|sich krankmelden|hat sich krankgemeldet|to call in sick|-|Ich muss mich heute krankmelden.|I have to call in sick today.
+v|B1|sich krank·melden|hat sich krankgemeldet|to call in sick|s|Ich muss mich heute krankmelden.|I have to call in sick today.
 v|B1|ab·nehmen|hat abgenommen|to lose weight|s,i|Ich habe drei Kilo abgenommen.|I've lost three kilos.
 v|B1|zu·nehmen|hat zugenommen|to gain weight|s,i|Im Urlaub habe ich zugenommen.|I put on weight on holiday.
 v|B1|sich impfen lassen|hat sich impfen lassen|to get vaccinated|i|Ich lasse mich gegen Grippe impfen.|I'm getting a flu jab.
@@ -1562,7 +1605,7 @@ v|A2|notieren|hat notiert|to note down|-|Ich notiere mir die Nummer.|I'll note d
 v|A2|weiter·leiten|hat weitergeleitet|to forward|s|Ich leite dir die E-Mail weiter.|I'll forward you the email.
 v|B1|planen|hat geplant|to plan|-|Wir planen die Produktion für das nächste Quartal.|We're planning production for the next quarter.
 v|B1|produzieren|hat produziert|to produce|-|Die Firma produziert Autoteile.|The company produces car parts.
-v|B1|herstellen|hat hergestellt|to manufacture|s|Wo wird das hergestellt?|Where is this manufactured?
+v|B1|her·stellen|hat hergestellt|to manufacture|s|Wo wird das hergestellt?|Where is this manufactured?
 v|B1|verschicken|hat verschickt|to send out, to ship|-|Wir verschicken die Ware heute.|We're shipping the goods today.
 v|B1|lagern|hat gelagert|to store|-|Die Ware wird kühl gelagert.|The goods are stored cool.
 v|B1|prüfen|hat geprüft|to check, to examine|-|Bitte prüfen Sie die Rechnung.|Please check the invoice.
@@ -2975,6 +3018,145 @@ function confetti(){
     if(alive&&t<tEnd) requestAnimationFrame(f); else { ctx.clearRect(0,0,W,H); cv.hidden=true; } })(t0);
 }
 
+
+/* =====================================================================
+   GRAMMAR — forms are generated from rules plus exception tables.
+   Verbs: Präsens, Perfekt, Imperativ · Nouns: 4 cases · Adjectives: comparison + endings
+   ===================================================================== */
+const G=(()=>{
+  const PRON=['ich','du','er/sie/es','wir','ihr','sie/Sie'];
+  const REFL_A=['mich','dich','sich','uns','euch','sich'], REFL_D=['mir','dir','sich','uns','euch','sich'];
+  const INSEP=['be','ver','ent','er','zer','emp','ge','miss','über','unter','wider','hinter'];
+  const PREPS=['aus','um','für','auf','an','mit','über','von','zu','nach'];
+  const FULL={
+    sein:['bin','bist','ist','sind','seid','sind'], haben:['habe','hast','hat','haben','habt','haben'],
+    werden:['werde','wirst','wird','werden','werdet','werden'], wissen:['weiß','weißt','weiß','wissen','wisst','wissen'],
+    tun:['tue','tust','tut','tun','tut','tun'], können:['kann','kannst','kann','können','könnt','können'],
+    müssen:['muss','musst','muss','müssen','müsst','müssen'], dürfen:['darf','darfst','darf','dürfen','dürft','dürfen'],
+    sollen:['soll','sollst','soll','sollen','sollt','sollen'], wollen:['will','willst','will','wollen','wollt','wollen'],
+    mögen:['mag','magst','mag','mögen','mögt','mögen']};
+  const IMP_FULL={sein:['sei','seid','seien Sie'],haben:['hab','habt','haben Sie'],werden:['werde','werdet','werden Sie'],tun:['tu','tut','tun Sie']};
+  const NO_IMP=new Set(['können','müssen','dürfen','sollen','wollen','mögen','wissen','regnen','schneien','donnern','gelingen','geschehen','passieren','gehören','betragen','kosten','fehlen','dauern','statt·finden','geboren werden','gefallen','scheinen','ab·laufen','ab·stürzen','gelten','weh·tun','aus·sterben','sinken','wachsen','auf·wachsen']);
+  // du / er forms for stem-changing verbs (prefixed versions are found automatically)
+  const CHG={fahren:['fährst','fährt'],schlafen:['schläfst','schläft'],tragen:['trägst','trägt'],waschen:['wäschst','wäscht'],fallen:['fällst','fällt'],
+    halten:['hältst','hält'],lassen:['lässt','lässt'],laufen:['läufst','läuft'],fangen:['fängst','fängt'],braten:['brätst','brät'],schlagen:['schlägst','schlägt'],
+    laden:['lädst','lädt'],raten:['rätst','rät'],wachsen:['wächst','wächst'],graben:['gräbst','gräbt'],blasen:['bläst','bläst'],stoßen:['stößt','stößt'],
+    geben:['gibst','gibt'],nehmen:['nimmst','nimmt'],helfen:['hilfst','hilft'],sprechen:['sprichst','spricht'],treffen:['triffst','trifft'],essen:['isst','isst'],
+    vergessen:['vergisst','vergisst'],messen:['misst','misst'],werfen:['wirfst','wirft'],sterben:['stirbst','stirbt'],brechen:['brichst','bricht'],
+    treten:['trittst','tritt'],empfehlen:['empfiehlst','empfiehlt'],befehlen:['befiehlst','befiehlt'],stehlen:['stiehlst','stiehlt'],sehen:['siehst','sieht'],
+    lesen:['liest','liest'],geschehen:['–','geschieht'],gelten:['giltst','gilt'],verderben:['verdirbst','verdirbt']};
+  const E2I=new Set(['geben','nehmen','helfen','sprechen','treffen','essen','vergessen','messen','werfen','sterben','brechen','treten','empfehlen','befehlen','stehlen','sehen','lesen','verderben']);
+  const DAT_REFL=new Set(['merken','leisten','überlegen','wünschen','vor·stellen','an·sehen','weh·tun']);
+  function findIn(table,base){ for(const k in table){ for(const p of ['',...INSEP]){ if(base===p+k) return {p,k,v:table[k]}; } } return null; }
+
+  function parseVerb(de){
+    let s=de.replace(/\s*\(.*?\)\s*/g,' ').trim(), toks=s.split(/\s+/), refl=false;
+    if(toks[0]==='sich'){refl=true;toks.shift();}
+    const post=[]; while(toks.length>1&&PREPS.includes(toks[toks.length-1])) post.unshift(toks.pop());
+    const verb=toks.pop(), pre=toks; let sep='',base=verb;
+    if(verb.includes('·')){ [sep,base]=verb.split('·'); }
+    return {refl,pre,post,sep,base,verb};
+  }
+  function regular(base){
+    let stem,f;
+    if(/eln$/.test(base)){ stem=base.slice(0,-1); const s2=base.slice(0,-3)+'l'; return {stem,forms:[s2+'e',stem+'st',stem+'t',base,stem+'t',base],impDu:s2+'e'}; }
+    if(/ern$/.test(base)){ stem=base.slice(0,-1); return {stem,forms:[stem+'e',stem+'st',stem+'t',base,stem+'t',base],impDu:stem+'e'}; }
+    stem=/en$/.test(base)?base.slice(0,-2):base.slice(0,-1);
+    const needE=/[dt]$/.test(stem)||/(chn|[bcdfgkpqstvwxzß][mn])$/.test(stem), sib=/(s|ß|z|x)$/.test(stem);
+    f=[stem+'e',stem+(needE?'est':sib?'t':'st'),stem+(needE?'et':'t'),base,stem+(needE?'et':'t'),base];
+    return {stem,forms:f,impDu:needE?stem+'e':stem};
+  }
+  function present(base){
+    const full=findIn(FULL,base); if(full) return {forms:full.v.map(x=>full.p+x),irr:[1,1,1,1,1,1].map((_,i)=>full.v[i]!==regular(full.k).forms[i]),kind:'full',key:full.k};
+    const r=regular(base), c=findIn(CHG,base);
+    if(c){ const f=r.forms.slice(); f[1]=c.v[0]==='–'?'–':c.p+c.v[0]; f[2]=c.p+c.v[1]; return {forms:f,irr:[0,1,1,0,0,0].map(Boolean),kind:'chg',key:c.k,chg:c,reg:r}; }
+    return {forms:r.forms,irr:[0,0,0,0,0,0].map(Boolean),kind:'reg',reg:r};
+  }
+  function verb(w){
+    const P=parseVerb(w.de), pr=present(P.base), dat=DAT_REFL.has(P.verb)||DAT_REFL.has(P.base), RF=dat?REFL_D:REFL_A;
+    const tail=(i,reflIdx)=>[P.refl?RF[reflIdx??i]:'',...P.pre,P.sep,...P.post].filter(Boolean).join(' ');
+    const pres=pr.forms.map((f,i)=>({p:PRON[i],f:(f+' '+tail(i)).trim(),irr:pr.irr[i]}));
+    // Perfekt: conjugate the auxiliary, keep the rest, swap "sich" for the right pronoun
+    const pw=(w.perf||'').split(' '), aux=pw[0]==='ist'?'sein':'haben', rest=pw.slice(1);
+    const perf=FULL[aux].map((a,i)=>({p:PRON[i],f:[a,...rest.map(t=>t==='sich'?RF[i]:t)].join(' ')}));
+    // Imperativ
+    let imp=null;
+    if(!NO_IMP.has(P.verb)&&!NO_IMP.has(w.de)&&!NO_IMP.has(P.base)){
+      let du,ihr,sie;
+      const fi=findIn(IMP_FULL,P.base);
+      if(fi){ [du,ihr,sie]=fi.v.map(x=>fi.p+x); sie=sie.replace(' Sie',''); }
+      else{
+        if(pr.kind==='chg'&&E2I.has(pr.key)){ const er=pr.forms[2]; du=pr.key==='treten'?er:er.replace(/t$/,''); }
+        else du=(pr.reg||regular(P.base)).impDu;
+        ihr=pr.forms[4]; sie=P.base;
+      }
+      const t=(ri)=>[P.refl?ri:'',...P.pre,P.sep,...P.post].filter(Boolean).join(' ');
+      imp=[{p:'du',f:(du+' '+t(RF[1])).trim()+'!'},{p:'ihr',f:(ihr+' '+t(RF[4])).trim()+'!'},{p:'Sie',f:(sie+' Sie '+t('sich')).trim()+'!'}];
+    }
+    return {pres,perf,aux,imp,sep:!!P.sep,refl:P.refl,irregular:pr.irr.some(Boolean)};
+  }
+
+  /* ---- nouns ---- */
+  const WEAK=new Set(['Junge','Nachbar','Erwachsene','Jugendliche','Bekannte','Beamte','Patient','Kunde','Geldautomat','Fahrkartenautomat','Tourist','Kollege',
+    'Student','Praktikant','Polizist','Lieferant','Bauer','Affe','Elefant','Löwe','Journalist','Präsident','Zeuge','Mensch','Herr','Bär']);
+  const WEAK_NS=new Set(['Name','Vorname','Familienname','Benutzername','Buchstabe','Gedanke']);
+  const syl=x=>(x.toLowerCase().match(/[aeiouäöüy]+/g)||[]).length;
+  const GEN_EXC={Cent:'Cents',WLAN:'WLANs',Gramm:'Gramms',Tennis:'Tennis','Café':'Cafés',Ei:'Eis',Weihnachten:'Weihnachten',Ostern:'Ostern',Silvester:'Silvesters'};
+  function genS(n,pl){
+    if(GEN_EXC[n]) return GEN_EXC[n];
+    if(pl&&pl!==n&&pl===n+'s') return n+'s';           // English loans: des Teams, des Jobs
+    if(/[éá]$/.test(n)) return n+'s';
+    if(/nis$/.test(n)) return n+'ses';
+    if(/[^a]us$/.test(n)&&syl(n)>=2&&!/Bus$/.test(n)) return n;   // des Virus
+    if(n==='Bus'||/Bus$/.test(n)) return n+'ses';
+    if(/(s|ß|x|z|sch)$/.test(n)) return n+'es';
+    if(/[aeiouy]$/.test(n)) return n+'s';
+    return syl(n)<=1?n+'es':n+'s';
+  }
+  function noun(w){
+    const N=w.de, a=w.art, pl=w.pl==='pl'?N:(w.pl==='-'?null:w.pl), weak=WEAK.has(N)||WEAK_NS.has(N);
+    let sg=null;
+    if(w.pl!=='pl'){
+      if(a==='die') sg=[['die',N],['die',N],['der',N],['der',N]];
+      else {
+        let obl=N, gen;
+        if(weak){ obl=N==='Herr'?'Herrn':N==='Nachbar'||N==='Bauer'?N+'n':/e$/.test(N)?N+'n':N+'en'; gen=WEAK_NS.has(N)?N+'ns':obl; }
+        else gen=genS(N,w.pl);
+        if(N==='Herz'){ sg=[['das','Herz'],['das','Herz'],['dem','Herzen'],['des','Herzens']]; }
+        else sg=a==='der'?[['der',N],['den',obl],['dem',obl],['des',gen]]:[['das',N],['das',N],['dem',N],['des',gen]];
+      }
+    }
+    const plur=pl?[['die',pl],['die',pl],['den',/[ns]$/.test(pl)?pl:pl+'n'],['der',pl]]:null;
+    return {cases:['Nominativ','Akkusativ','Dativ','Genitiv'],sg,pl:plur,weak};
+  }
+
+  /* ---- adjectives ---- */
+  const NOCOMP=new Set(('letzte nächste besondere einzig ganz halb doppelt gesamt übrig täglich wöchentlich monatlich jährlich heutig morgig damalig ehemalig zukünftig vorbei bar online offline digital elektrisch elektronisch automatisch kabellos virtuell vegan vegetarisch biologisch lila rosa orange rot blau grün gelb schwarz weiß grau braun blond gratis kostenlos steuerfrei bargeldlos brutto netto super egal pleite besetzt geschlossen kaputt fertig verwandt senkrecht waagerecht allein zusammen männlich weiblich schriftlich mündlich links rechts geradeaus weg anders genug verheiratet ledig geschieden verlobt verwitwet schwanger erwachsen älter '+
+    'erschöpft verletzt möbliert renoviert abgelaufen reduziert gebraucht ausverkauft überzogen gesperrt verspätet ausgebucht arbeitslos berufstätig angestellt zuständig befristet unbefristet qualifiziert erledigt zweisprachig ärztlich körperlich chronisch finanziell historisch städtisch öffentlich beruflich geschäftlich wissenschaftlich theoretisch telefonisch national ausländisch politisch gesellschaftlich staatlich europäisch offiziell ehrenamtlich multikulturell gesetzlich legal illegal amtlich strafbar schuldig unschuldig beglaubigt verpflichtet vollständig unvollständig abgelehnt genehmigt verboten erlaubt technisch künstlerisch kulturell tropisch allergisch maximal minimal ungefähr zusätzlich gültig ungültig vorrätig vorhanden verfügbar unmöglich einverstanden verliebt beleidigt gleichberechtigt gleichzeitig gleich endgültig vorläufig rechtzeitig vorübergehend anonym neutral sonstig eigentlich wirklich durchschnittlich zweifelhaft ansteckend').split(' '));
+  const NOINFL=new Set('lila rosa orange super egal pleite bar online offline gratis allein zusammen vorbei genug links rechts geradeaus weg anders brutto netto einverstanden'.split(' '));
+  const UML={alt:'ält',arm:'ärm',dumm:'dümm',groß:'größ',hart:'härt',jung:'jüng',kalt:'kält',klug:'klüg',krank:'kränk',kurz:'kürz',lang:'läng',scharf:'schärf',schwach:'schwäch',stark:'stärk',warm:'wärm',nass:'näss',gesund:'gesünd'};
+  const IRR={fit:['fitter','am fittesten'],gut:['besser','am besten'],viel:['mehr','am meisten'],gern:['lieber','am liebsten'],hoch:['höher','am höchsten'],nah:['näher','am nächsten'],groß:['größer','am größten']};
+  function adj(w){
+    const a=w.de; let comp=null;
+    if(!NOCOMP.has(a)){
+      if(IRR[a]) comp=IRR[a];
+      else{
+        const st=UML[a]||a;
+        let c; if(/e$/.test(st)) c=st+'r'; else if(/el$/.test(st)) c=st.slice(0,-2)+'ler'; else if(/(au|eu)er$/.test(st)) c=st.slice(0,-2)+'rer'; else c=st+'er';
+        const esten=/isch$/.test(st)&&syl(st)>=2?false:/([dtsßxz]|sch|[aeiouäöü]h?)$/.test(st)&&!/e$/.test(st);
+        comp=[c,'am '+st+(esten?'esten':'sten')];
+      }
+    }
+    let ends=null;
+    if(!NOINFL.has(a)){
+      let s=a==='hoch'?'hoh':/e$/.test(a)?a.slice(0,-1):/el$/.test(a)?a.slice(0,-2)+'l':/(au|eu)er$/.test(a)?a.slice(0,-2)+'r':a;
+      ends=[`ein ${s}er Tag`,`eine ${s}e Sache`,`ein ${s}es Haus`,`die ${s}en Tage`];
+    }
+    return {comp,ends,irregular:!!IRR[a]||!!UML[a]};
+  }
+  return {verb,noun,adj,parseVerb,present};
+})();
+
 /* ---------- Browse ---------- */
 let LIMIT=60;
 function renderList(){
@@ -2984,14 +3166,72 @@ function renderList(){
   if(!ws.length){el.innerHTML='<div class="empty">No words match. Try another theme, level, memory level or search.</div>';return}
   el.innerHTML=ws.slice(0,LIMIT).map(w=>{
     const tagCls=w.t==='n'?artCls(w):w.t, tagTxt=w.t==='n'?(w.pl==='pl'?'die':w.art):(w.t==='v'?'verb':'adj');
-    return `<div class="row"><span class="art ${tagCls}" title="${w.pl==='pl'?'plural only':''}">${tagTxt}</span>
+    return `<div class="row tap" data-wid="${esc(w.id)}" role="button" tabindex="0" aria-label="Details for ${esc(plain(w))}"><span class="art ${tagCls}" title="${w.pl==='pl'?'plural only':''}">${tagTxt}</span>
       <div class="w"><div class="de">${deHTML(w)}</div><div class="en">${esc(w.en)}</div><div class="meta">${w.lv} · ${metaLine(w)}${badges(w)}</div></div>
       <div class="rt">${memHTML(w)}<button class="say" data-say="${esc(plain(w))}" aria-label="Pronounce ${esc(plain(w))}">🔊</button></div>${exHTML(w)}</div>`;
   }).join('')+(ws.length>LIMIT?`<div class="more"><button class="btn" id="more">Show ${Math.min(60,ws.length-LIMIT)} more of ${ws.length-LIMIT}</button></div>`:'');
 }
 $('#sort').innerHTML=Object.entries(SORTS).map(([k,v])=>`<option value="${k}"${k===SORT?' selected':''}>${v}</option>`).join('');
 $('#sort').onchange=e=>{SORT=e.target.value;try{localStorage.setItem('wortschatz-sort',SORT)}catch(_){}LIMIT=60;renderList()};
-$('#list').onclick=e=>{const s=e.target.closest('[data-say]');if(s)speak(s.dataset.say);if(e.target.id==='more'){LIMIT+=60;renderList()}};
+$('#list').onclick=e=>{const s=e.target.closest('[data-say]');if(s){speak(s.dataset.say);return} if(e.target.id==='more'){LIMIT+=60;renderList();return}
+  const r=e.target.closest('[data-wid]'); if(r) openSheet(r.dataset.wid,sorted(filtered()));};
+$('#list').addEventListener('keydown',e=>{ if((e.key==='Enter'||e.key===' ')&&e.target.matches('[data-wid]')){e.preventDefault();openSheet(e.target.dataset.wid,sorted(filtered()))} });
+
+/* ---------- Word detail sheet ---------- */
+let SHEET={list:[],i:0,last:null};
+function openSheet(id,list){ SHEET.list=list&&list.length?list:WORDS; SHEET.i=Math.max(0,SHEET.list.findIndex(w=>w.id===id)); SHEET.last=document.activeElement; renderSheet(); $('#sheet').hidden=false; document.body.classList.add('noscroll'); setTimeout(()=>$('#shClose').focus(),30); }
+function closeSheet(){ $('#sheet').hidden=true; document.body.classList.remove('noscroll'); try{SHEET.last&&SHEET.last.focus()}catch(_){} }
+const sayRow=(t)=>`data-say="${esc(t)}"`;
+function memBlock(w){
+  const r=PROG[w.id], p=recall(w), L=levelOf(p);
+  if(!r) return `<div class="shmem"><span class="mem new"><span class="pct">New</span></span><span class="kbd">You haven't practised this word yet.</span></div>`;
+  const hist=(r.h||'').split('').map(x=>`<i class="${x==='1'?'y':'n'}"></i>`).join('');
+  return `<div class="shmem"><div class="mem"><span class="pct" style="color:${L.c}">${p}%</span><span class="mbar"><i style="width:${p}%;background:${L.c}"></i></span></div>
+    <div class="shstat"><b>${L.name}</b> · ${r.c} right, ${r.x} wrong · typical time ${secs(r.ms)} · last ${ago(r.last)}${hist?`<div class="hist" title="Last answers, oldest first">${hist}</div>`:''}</div></div>`;
+}
+function verbHTML(w){
+  const v=G.verb(w);
+  const tbl=(rows,cls)=>`<table class="ctab ${cls||''}"><tbody>${rows.map(r=>`<tr ${sayRow(r.p.split('/')[0]+' '+r.f)}><th>${r.p}</th><td class="${r.irr?'irr':''}">${esc(r.f)}</td></tr>`).join('')}</tbody></table>`;
+  return `<section class="shsec"><h3>Präsens <small>present</small></h3>${tbl(v.pres)}
+      ${v.irregular?'<p class="kbd" style="text-align:left"><span class="irrkey">highlighted</span> = irregular form</p>':''}
+      ${v.sep?'<p class="kbd" style="text-align:left">Separable verb: the prefix goes to the end of the sentence.</p>':''}</section>
+    <section class="shsec"><h3>Perfekt <small>with ${v.aux}</small></h3>${tbl(v.perf)}</section>
+    <section class="shsec"><h3>Imperativ <small>commands</small></h3>${v.imp?tbl(v.imp):'<p class="kbd" style="text-align:left">Not normally used as a command.</p>'}</section>`;
+}
+function nounHTML(w){
+  const n=G.noun(w), ac=a=>`<span class="ca ${a==='der'||a==='den'||a==='dem'||a==='des'?(w.art==='der'?'der':w.art==='das'?'das':'die'):''}">${a}</span>`;
+  const cell=x=>x?`<td ${sayRow(x[0]+' '+x[1])}><span class="ca">${x[0]}</span> ${esc(x[1])}</td>`:'<td class="na">—</td>';
+  return `<section class="shsec"><h3>Cases <small>Kasus</small></h3>
+    <table class="ctab cases"><thead><tr><th></th>${n.sg?'<th>Singular</th>':''}<th>Plural</th></tr></thead><tbody>
+    ${n.cases.map((c,i)=>`<tr><th>${c}</th>${n.sg?cell(n.sg[i]):''}${cell(n.pl&&n.pl[i])}</tr>`).join('')}</tbody></table>
+    ${n.weak?'<p class="kbd" style="text-align:left">n-Deklination: this noun adds -n/-en in every case except the nominative singular.</p>':''}
+    ${!n.pl?'<p class="kbd" style="text-align:left">Usually no plural.</p>':''}${!n.sg?'<p class="kbd" style="text-align:left">Plural-only noun.</p>':''}</section>`;
+}
+function adjHTML(w){
+  const a=G.adj(w);
+  return `<section class="shsec"><h3>Comparison <small>Steigerung</small></h3>
+    ${a.comp?`<table class="ctab"><tbody><tr ${sayRow(w.de)}><th>Positiv</th><td>${esc(w.de)}</td></tr><tr ${sayRow(a.comp[0])}><th>Komparativ</th><td class="${a.irregular?'irr':''}">${esc(a.comp[0])}</td></tr><tr ${sayRow(a.comp[1])}><th>Superlativ</th><td class="${a.irregular?'irr':''}">${esc(a.comp[1])}</td></tr></tbody></table>`
+      :'<p class="kbd" style="text-align:left">This adjective is not normally compared.</p>'}
+    ${w.opp?`<p class="kbd" style="text-align:left">Opposite: <b>${esc(w.opp)}</b></p>`:''}</section>
+    ${a.ends?`<section class="shsec"><h3>Endings <small>with ein / eine / die</small></h3><table class="ctab"><tbody>${a.ends.map(x=>`<tr ${sayRow(x)}><td>${esc(x)}</td></tr>`).join('')}</tbody></table></section>`
+      :'<section class="shsec"><p class="kbd" style="text-align:left">This word never takes endings.</p></section>'}`;
+}
+function renderSheet(){
+  const w=SHEET.list[SHEET.i], n=SHEET.list.length;
+  const tagCls=w.t==='n'?artCls(w):w.t, tagTxt=w.t==='n'?(w.pl==='pl'?'die':w.art):(w.t==='v'?'verb':'adj');
+  $('#sheetBody').innerHTML=`
+    <div class="shhead"><span class="art ${tagCls}">${tagTxt}</span>
+      <div class="shword"><div class="big">${deHTML(w)} <button class="say" data-say="${esc(plain(w))}" aria-label="Pronounce">🔊</button></div>
+      <div class="en">${esc(w.en)}</div><div class="meta">${w.lv} · ${esc(w.theme)} · ${metaLine(w)}${badges(w)}</div></div></div>
+    ${memBlock(w)}
+    ${w.t==='v'?verbHTML(w):w.t==='n'?nounHTML(w):adjHTML(w)}
+    <section class="shsec"><h3>Example</h3>${exHTML(w,false)}</section>
+    <p class="kbd" style="text-align:left">Tap any form to hear it. Forms are generated from grammar rules; if one looks wrong, tell me and I'll fix it.</p>`;
+  $('#shPos').textContent=(SHEET.i+1)+' / '+n; $('#shPrev').disabled=SHEET.i===0; $('#shNext').disabled=SHEET.i>=n-1;
+  $('#sheetBody').scrollTop=0;
+}
+document.addEventListener('DOMContentLoaded',()=>{});
+
 $('#practiseList').onclick=()=>{
   let ws=filtered(); if(MODE==='article') ws=ws.filter(w=>w.t==='n');
   if(!ws.length){ MODE='flash'; ws=filtered(); }
@@ -3656,6 +3896,11 @@ function endDuel(){
   $('#duAgain').onclick=()=>{S=null;startDuel()};
 }
 
+$('#shClose').onclick=closeSheet; $('#shBack').onclick=closeSheet;
+$('#shPrev').onclick=()=>{if(SHEET.i>0){SHEET.i--;renderSheet()}}; $('#shNext').onclick=()=>{if(SHEET.i<SHEET.list.length-1){SHEET.i++;renderSheet()}};
+$('#sheet').addEventListener('click',e=>{const s=e.target.closest('[data-say]');if(s)speak(s.dataset.say)});
+document.addEventListener('keydown',e=>{ if($('#sheet').hidden)return; if(e.key==='Escape')closeSheet(); else if(e.key==='ArrowRight')$('#shNext').click(); else if(e.key==='ArrowLeft')$('#shPrev').click(); });
+$('#shPractise').onclick=()=>{ const w=SHEET.list[SHEET.i]; closeSheet(); if(MODE==='article'&&w.t!=='n'){MODE='flash'} tab('practice'); startSession([w],'word'); };
 $('#sndBtn').textContent=SOUND?'🔊 Sounds on':'🔇 Sounds off'; $('#sndBtn').setAttribute('aria-pressed',SOUND);
 renderFilters();renderList();renderSetup();renderStats();
 
